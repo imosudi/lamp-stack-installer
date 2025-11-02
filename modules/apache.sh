@@ -33,30 +33,3 @@ configure_php_handler() {
     fi
     systemctl reload apache2 || true
 }
-
-setup_apache_virtualhost() {
-    local domain=$1
-    local doc_root=$2
-    local vh_conf="/etc/apache2/sites-available/${domain}.conf"
-
-    log "Setting up Apache virtual host for ${domain}..."
-
-    cat > "$vh_conf" <<EOF  `
-`<VirtualHost *:80>
-    ServerName ${domain}
-    DocumentRoot ${doc_root}
-
-    <Directory ${doc_root}>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-
-    ErrorLog \${APACHE_LOG_DIR}/${domain}_error.log
-    CustomLog \${APACHE_LOG_DIR}/${domain}_access.log combined  
-</VirtualHost>
-EOF
-    a2ensite "${domain}.conf" || true
-    systemctl reload apache2 || true
-}       
-:`
