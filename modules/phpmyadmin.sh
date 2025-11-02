@@ -1,42 +1,45 @@
 #!/usr/bin/env bash
-# phpmyadmin.sh — phpMyAdmin installation and configuration
+# phpmyadmin.sh - phpMyAdmin installation and configuration (sourced)
+
+set -euo pipefail
 
 setup_phpmyadmin() {
-  log "Installing phpMyAdmin manually..."
+    local domain="${DOMAIN:-localhost}"
+    local phpmydomain="phpmyadmin.${DOMAIN:-localhost}"
+    local phpmydbpw="${PHPMYADMIN_PASSWORD:-$(openssl rand -base64 18)}"
 
-  local PMA_VERSION="5.2.1"
-  local PMA_DIR="/var/www/phpmyadmin"
-  local PHPMYADMIN_DOMAIN="phpmyadmin.${DOMAIN:-localhost}"
-  local PMA_PASS="${PHPMYADMIN_PASS:-$(generate_password)}"
+    log "Installing phpMyAdmin..."
+    apt install -y phpmyadmin
 
-  mkdir -p "$PMA_DIR"
-  cd /tmp || exit 1
+    log "Configuring Apache for phpMyAdmin access..."
 
-  log "Downloading phpMyAdmin $PMA_VERSION..."
-  wget -q "https://files.phpmyadmin.net/phpMyAdmin/${PMA_VERSION}/phpMyAdmin-${PMA_VERSION}-all-languages.tar.gz"
-  tar xzf "phpMyAdmin-${PMA_VERSION}-all-languages.tar.gz" -C "$PMA_DIR" --strip-components=1
+    # --- Allow phpMyAdmin via IP and domain ---
+    local apache_conf="/etc/apache2/conf-available/phpmyadmin.conf"
 
-  log "Creating phpMyAdmin configuration..."
-  cat > "$PMA_DIR/config.inc.php" <<EOF
-<?php
-\$cfg['blowfish_secret'] = '$(openssl rand -hex 16)';
-\$i = 1;
-\$cfg['Servers'][\$i]['auth_type'] = 'cookie';
-\$cfg['Servers'][\$i]['AllowNoPassword'] = false;
-?>
+    # Ensure default phpMyAdmin alias for IP-based access
+    if ! grep -q "/phpmyadmin" "$apache_conf"; then
+        cat <<'EOF' > "$apache_conf"
+Alias /phpmyadmin /usr/share/phpmyadmin
+
+<Directory /usr/share/phpmyadmin>
+    Options FollowSymLinks
+    DirectoryIndex index.php
+    AllowOverride All
+    Require all granted
+</Directory>
 EOF
+    fi
 
-  chown -R www-data:www-data "$PMA_DIR"
-  chmod -R 755 "$PMA_DIR"
-
-  log "Creating Apache virtual host for phpMyAdmin..."
-  cat > /etc/apache2/sites-available/phpmyadmin.conf <<EOF
+    # --- Create VirtualHost for phpmyadmin.domain.com ---
+    local vhost_file="/etc/apache2/sites-available/phpmyadmin.conf"
+    cat <<EOF > "$vhost_file"
 <VirtualHost *:80>
-    ServerName $PHPMYADMIN_DOMAIN
-    DocumentRoot $PMA_DIR
+    ServerName ${phpmydomain}
+    DocumentRoot /usr/share/phpmyadmin
 
-    <Directory $PMA_DIR>
+    <Directory /usr/share/phpmyadmin>
         Options FollowSymLinks
+        DirectoryIndex index.php
         AllowOverride All
         Require all granted
     </Directory>
@@ -46,8 +49,16 @@ EOF
 </VirtualHost>
 EOF
 
-  a2ensite phpmyadmin.conf >/dev/null
-  systemctl reload apache2
+    # Enable site & reload Apache
+    a2ensite phpmyadmin.conf >/dev/null 2>&1 || true
+    systemctl reload apache2 || true
 
-  log "phpMyAdmin successfully configured at: http://$PHPMYADMIN_DOMAIN/"
+    log "phpMyAdmin configured successfully."
+    log "Access URLs:"
+    log "  - http://${domain}/phpmyadmin"
+    log "  - http://${phpmydomain}"
+    log "  - http://${SERVER_IP:-127.0.0.1}/phpmyadmin"
+
+    # Export password for cleanup.sh
+    export PHPMYADMIN_PASSWORD="$phpmydbpw"
 }
