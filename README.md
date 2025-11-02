@@ -152,10 +152,24 @@ Contributions welcome — please fork, create a feature branch, and open a pull 
 
 ---
 
-## License & Attribution
 
-**Repository:** https://github.com/imosudi/lamp-stack-installer  
-**Author:** Mosudi Isiaka (@imosudi)  
-**License:** BSD 3-Clause (see `LICENSE` file)
+## License
+
+This project is licensed under the **BSD 3-Clause License** — see the [LICENSE](./LICENSE) file for details.
+
+```
+BSD 3-Clause License
+
+Copyright (c) 2025, Mosudi Isiaka
+All rights reserved.
+```
+
+## 👤 Author
+
+**Mosudi Isiaka**  
+📧 [mosudi.isiaka@gmail.com](mailto:mosudi.isiaka@gmail.com)  
+🌐 [https://mioemi.com](https://mioemi.com)   
+💻 [https://github.com/imosudi](https://github.com/imosudi)
+
 
 ---
