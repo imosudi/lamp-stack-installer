@@ -1,15 +1,15 @@
 # UPGRADE_PLAN.md  
-### Modular Upgrade Roadmap — LAMP Stack Installer for Ubuntu 24.04+
+### Modular Upgrade Roadmap - LAMP Stack Installer for Ubuntu 24.04+
 
 This document defines a structured roadmap for improving the LAMP Stack Installer modules.  
 Each section lists proposed enhancements grouped by **priority**:  
-- 🔴 **Critical** — Security, reliability, or compatibility upgrades.  
-- 🟡 **Recommended** — Enhancements that improve usability, automation, or maintainability.  
-- 🟢 **Optional** — Nice-to-have or advanced capabilities for future versions.
+- 🔴 **Critical** - Security, reliability, or compatibility upgrades.  
+- 🟡 **Recommended** - Enhancements that improve usability, automation, or maintainability.  
+- 🟢 **Optional** - Nice-to-have or advanced capabilities for future versions.
 
 ---
 
-## 1. install.sh — Main Orchestrator
+## 1. install.sh - Main Orchestrator
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | Pre-flight checks | Validate OS version (≥ 24.04), disk space, and network reachability. |
@@ -20,7 +20,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 ---
 
-## 2. config.sh — Configuration & CLI Parsing
+## 2. config.sh - Configuration & CLI Parsing
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | Input validation | Enforce strict domain, IP, and password validation pre-install. |
@@ -30,7 +30,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 ---
 
-## 3. helpers.sh — Utility Library
+## 3. helpers.sh - Utility Library
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | Structured logging | Add log levels (`INFO`, `WARN`, `ERROR`) with timestamp and JSON mode. |
@@ -40,7 +40,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 ---
 
-## 4. firewall.sh — UFW Configuration
+## 4. firewall.sh - UFW Configuration
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | Fail2ban integration | Auto-install and configure fail2ban after UFW setup. |
@@ -50,7 +50,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 ---
 
-## 5. install_packages.sh — Base Package Setup
+## 5. install_packages.sh - Base Package Setup
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | Retry mechanism | Automatically retry failed apt installs (transient errors). |
@@ -60,7 +60,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 ---
 
-## 6. mysql.sh — MySQL Installation & Hardening
+## 6. mysql.sh - MySQL Installation & Hardening
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | Remote access control | `--allow-remote-db` flag with IP whitelist and SSL-based connections. |
@@ -70,7 +70,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 ---
 
-## 7. php.sh — PHP Installation & Configuration
+## 7. php.sh - PHP Installation & Configuration
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | PHP security hardening | Disable unsafe functions (`exec`, `shell_exec`, `system`) in production. |
@@ -80,7 +80,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 ---
 
-## 8. apache.sh — Apache Virtual Host Configuration
+## 8. apache.sh - Apache Virtual Host Configuration
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | HSTS enforcement | Add strict-transport-security headers to SSL vhosts. |
@@ -90,7 +90,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 ---
 
-## 9. certbot.sh — SSL Provisioning
+## 9. certbot.sh - SSL Provisioning
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | Renewal monitoring | Alert admin via email if auto-renew fails. |
@@ -100,7 +100,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 ---
 
-## 10. cleanup.sh — Post-Installation Tasks
+## 10. cleanup.sh - Post-Installation Tasks
 | Priority | Upgrade | Description |
 |-----------|----------|-------------|
 | 🔴 | Secure temp deletion | Wipe temporary files (`.my.cnf`, etc.) using `shred`. |
@@ -124,7 +124,7 @@ Each section lists proposed enhancements grouped by **priority**:
 
 | Phase | Focus | Modules |
 |-------|--------|----------|
-| **Phase 1 (Security & Reliability)** | Critical updates — pre-flight checks, MySQL hardening, UFW + fail2ban, logging improvements | `install.sh`, `mysql.sh`, `firewall.sh`, `helpers.sh` |
+| **Phase 1 (Security & Reliability)** | Critical updates - pre-flight checks, MySQL hardening, UFW + fail2ban, logging improvements | `install.sh`, `mysql.sh`, `firewall.sh`, `helpers.sh` |
 | **Phase 2 (Automation & Usability)** | Non-interactive config, rollback, backup, structured logs | `config.sh`, `install_packages.sh`, `cleanup.sh` |
 | **Phase 3 (Performance & Optimisation)** | PHP tuning, Apache HTTP/2, SSL binding, OPcache | `php.sh`, `apache.sh`, `certbot.sh` |
 | **Phase 4 (Advanced Features)** | Docker support, telemetry, health-check, self-update | Cross-module |
