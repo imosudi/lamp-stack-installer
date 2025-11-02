@@ -36,7 +36,7 @@ source "$BASE_DIR/modules/mysql.sh"
 install_mysql
 
 source "$BASE_DIR/modules/phpmyadmin.sh"
-install_phpmyadmin
+setup_phpmyadmin
 
 source "$BASE_DIR/modules/firewall.sh"
 configure_ufw
