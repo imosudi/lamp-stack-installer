@@ -15,7 +15,8 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="/var/log/lamp_install.log"
 
 # --- Source core modules ---
-source "$BASE_DIR/modules/config.sh"
+#source "$BASE_DIR/modules/config.sh"
+source "$BASE_DIR/modules/config.sh" "$@"
 source "$BASE_DIR/modules/helpers.sh"
 
 # --- Log header ---
