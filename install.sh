@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # ==========================================================
 #  LAMP Stack Secure Installer (Modular)
-#  Author: Mosudi I. O.
+#  Author: Mosudi I. O., imosudi
 #  Version: 1.0
-#  Date: 2025-11-02
+#  Date: 2024-06-15
 # ==========================================================
 # install.sh - Main installation script
 
