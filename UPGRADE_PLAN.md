@@ -1,4 +1,4 @@
-# UPGRADE_PLAN.md  
+# UPGRADE PLAN
 ### Modular Upgrade Roadmap - LAMP Stack Installer for Ubuntu 24.04+
 
 This document defines a structured roadmap for improving the LAMP Stack Installer modules.  
