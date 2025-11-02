@@ -5,6 +5,7 @@
 #  Version: 1.0
 #  Date: 2025-11-02
 # ==========================================================
+# install.sh - Main installation script
 
 set -euo pipefail
 trap 'echo "[ERROR] Installation aborted. Check log for details." >&2' ERR
