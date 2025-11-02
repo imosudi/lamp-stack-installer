@@ -19,8 +19,9 @@ install_certbot_and_get_certs() {
     snap install core >/dev/null 2>&1 || snap refresh core >/dev/null 2>&1
     snap install --classic certbot >/dev/null 2>&1
     ln -sf /snap/bin/certbot /usr/bin/certbot
-
-    log "Requesting certificates for ${domain} and ${phpmy}..."
+    
+    log "Obtaining SSL certificates via Let's Encrypt for ${domain} and ${phpmy}..."
+    #log "Requesting certificates for ${domain} and ${phpmy}..."
     ufw allow 80/tcp >/dev/null 2>&1 || true
 
     if certbot --apache --non-interactive --agree-tos \

@@ -50,6 +50,6 @@ source "$BASE_DIR/modules/cleanup.sh"
 write_credentials
 
 log "=========================================================="
-log "Installation completed successfully."
+log "✅ LAMP stack installation completed successfully!"
 log "Log file: $LOG_FILE"
 log "=========================================================="
